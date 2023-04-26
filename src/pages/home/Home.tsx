@@ -2,7 +2,10 @@ import React from 'react';
 import { LaptopOutlined, NotificationOutlined, UserOutlined } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { Breadcrumb, Layout, Menu, theme } from 'antd';
+import { Drawer, Button, Table, Space, Pagination, message, Select, Form, Input, DatePicker } from 'antd';
+import { StarOutlined, StarTwoTone, PlusOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
+import { useState } from "react"
 
 const { Header, Content, Sider } = Layout;
 
@@ -37,6 +40,15 @@ const items2: MenuProps['items'] = [UserOutlined, LaptopOutlined, NotificationOu
 );
 
 export const Home: React.FC = () => {
+  const [total, setTotal] = useState(0)
+  const [pageNum, setPageNum] = useState(1)
+  const [pageSize, setPageSize] = useState(10)
+  const [loading, setLoading] = useState(false)
+  const [dataSrc, setDataSrc] = useState([])
+
+  const { Option } = Select;
+
+
   const {
     token: { colorBgContainer },
   } = theme.useToken();
@@ -66,7 +78,42 @@ export const Home: React.FC = () => {
               background: colorBgContainer,
             }}
           >
-            Content
+            <div className="content clearfix">
+              <div className="list">
+                <h2>Task List</h2>
+                <div className="list-right">
+                  <Space size="middle">
+                    <Select size="large" onChange={() => { }} style={{ width: 160 }} allowClear placeholder="请筛选任务状态">
+                      <Option value>All</Option>
+                      <Option value={0}>To do</Option>
+                      <Option value={1}>Done</Option>
+                      <Option value={2}>Delete</Option>
+                    </Select>
+                    <Button type="primary" size="large" onClick={() => { }}><PlusOutlined /> 添加任务</Button>
+                  </Space>
+                </div>
+              </div>
+
+              <Table
+                bordered
+                // rowKey={record => record.id}
+                dataSource={dataSrc}
+                // columns={columns}
+                loading={loading}
+                pagination={false}
+              />
+              <Pagination
+                className="pagination"
+                total={total}
+                style={{ display: loading && total === 0 ? 'none' : '' }}
+                showTotal={total => `共 ${total} 条数据`}
+                onChange={() => { }}
+                current={pageNum}
+                showSizeChanger={false}
+                defaultPageSize={pageSize}
+                hideOnSinglePage={false}
+              />
+            </div>
           </Content>
         </Layout>
       </Layout>

@@ -1,9 +1,10 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 import { addTaskAPI } from "../../utils";
+import moment, { Moment } from "moment"
 
 export interface Task {
     title: String,
-    gmt_expire: Number,
+    gmt_expire: Moment,
     content: String,
 }
 
@@ -21,13 +22,13 @@ const initialState: TaskState = {
 
 export const addTask = createAsyncThunk(
     "task/addTask",
-    async(parameters: {jwt: string | null, task: Task}, thunkAPI) => {
+    async (parameters: { jwt: string | null, task: Task }, thunkAPI) => {
         try {
-            addTaskAPI({jwt: parameters.jwt, task: parameters.task})
-            .then(res=>{
-                console.log(res)
-                return res
-            })               
+            addTaskAPI({ jwt: parameters.jwt, task: parameters.task })
+                .then(res => {
+                    console.log(res)
+                    return res
+                })
         } catch (error) {
             console.log(error)
             alert('Fail to add task. Please try again')

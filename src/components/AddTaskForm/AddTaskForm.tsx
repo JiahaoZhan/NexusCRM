@@ -7,7 +7,7 @@ import { useAppSelector, useAppDispatch } from "../../redux"
 import moment from "moment"
 
 export const AddTaskForm: React.FC = () => {
-    
+
     // Get jwt token for server side authentication
     const jwt = useAppSelector(state => state.user.token)
     const dispatch = useAppDispatch()
@@ -34,20 +34,20 @@ export const AddTaskForm: React.FC = () => {
     const onSubmit = () => {
         // retrieve the form data
         form.validateFields()
-        .then(values=> {
-            const task = {
-                title: values.title,
-                gmt_expire: moment(values.date).valueOf(),
-                content: values.content
+            .then(values => {
+                const task = {
+                    title: values.title,
+                    gmt_expire: moment(values.date),
+                    content: values.content
                 }
                 // request to api to add task to database
-                dispatch(addTask({jwt: jwt, task: task}))
-                .then(res => {
-                    console.log("Adding task: ", res);
-                    toggleVisible(false)
-                    
-                })
-        })
+                dispatch(addTask({ jwt: jwt, task: task }))
+                    .then(res => {
+                        console.log("Adding task: ", res);
+                        toggleVisible(false)
+
+                    })
+            })
     }
 
     const onClose = () => {
@@ -62,5 +62,5 @@ export const AddTaskForm: React.FC = () => {
     }
 
 
-    return <TaskForm onSubmit={onSubmit} onClose={onClose} {...formProps}/>
+    return <TaskForm onSubmit={onSubmit} onClose={onClose} {...formProps} />
 }
