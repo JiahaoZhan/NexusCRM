@@ -35,6 +35,12 @@ module.exports = (env) => {
     },
     devtool: isProduction ? "source-map" : "inline-source-map",
     devServer: {
+      proxy: {
+        "/api": {
+          target: "http://127.0.0.1:8088",
+          changeOrigin: true,
+        },
+      },
       static: path.join(__dirname, "public"),
       historyApiFallback: true,
     },
