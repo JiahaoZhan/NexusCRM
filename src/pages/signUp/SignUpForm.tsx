@@ -1,67 +1,65 @@
 import { Form, Input, Button, Checkbox } from "antd";
-import axios from "axios"
 import { useNavigate } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../../redux";
+import { signUp } from "../../redux";
 
 export const SignUpForm = () => {
+    const loading = useAppSelector((state) => state.user.loading)
+    const error = useAppSelector((state) => state.user.error)
+
+    const dispatch = useAppDispatch();
     const navigate = useNavigate()
-    const onFinish = async(values : any) => {
-        try {
-            await axios.post("http://localhost:8088/auth/signUp", {
-                email: values.username,
-                password: values.password,
-                confirmPassword: values.confirm
-            }).then((result)=>{
-                console.log(result)
-            })
-            navigate('/signIn')
-        } catch (error) {
-            console.log(error)
-            alert('Fail to sign up. Please try again')
-        }
+
+    const onFinish = async (values: any) => {
+        dispatch(signUp({
+            email: values.username,
+            password: values.password
+        }))
     }
+
     const onFinishFailed = (errorInfo: any) => {
         console.log('Failed:', errorInfo)
     }
     return (
         <Form
-        onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
+            onFinish={onFinish}
+            onFinishFailed={onFinishFailed}
         >
             <Form.Item
-            label="Username"
-            name="username"
-            rules={[{required: true, message: "Please enter your username"}]}
+                label="Username"
+                name="username"
+                rules={[{ required: true, message: "Please enter your username" }]}
             >
                 <Input />
             </Form.Item>
 
             <Form.Item
-            label="Password"
-            name="password"
-            rules={[{required: true, message: "Please enter your password"}]}
+                label="Password"
+                name="password"
+                rules={[{ required: true, message: "Please enter your password" }]}
             >
                 <Input.Password />
             </Form.Item>
 
             <Form.Item
-            label="Confirm Password"
-            name="confirm"
-            hasFeedback
-            rules={[
-                {
-                    required: true, message: "Please confirm your password"
-                },
-                ({getFieldValue}) => ({
-                    validator(_, value) {
-                        if (!value || getFieldValue("password") === value) {
-                            return Promise.resolve();
+                label="Confirm Password"
+                name="confirm"
+                hasFeedback
+                rules={[
+                    {
+                        required: true, message: "Please confirm your password"
+                    },
+                    ({ getFieldValue }) => ({
+                        validator(_, value) {
+                            if (!value || getFieldValue("password") === value) {
+                                return Promise.resolve();
+                            }
+                            return Promise.reject("Two passwords do not match")
                         }
-                        return Promise.reject("Two passwords do not match")
-                    }
-                })
-            ]}
+                    })
+                ]}
             >
-                <Input.Password/>
+                <Input.Password />
             </Form.Item>
 
             <Form.Item name="remember" valuePropName="checked">

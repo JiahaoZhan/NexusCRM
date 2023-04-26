@@ -2,7 +2,7 @@
 import { message } from "antd";
 import axios from "axios";
 import { store, logOut } from "../redux";
-import { apiUrl, url} from "./url";
+import { apiUrl } from "./url";
 
 axios.defaults.headers["Content-Type"] = "application/json";
 
@@ -18,6 +18,7 @@ service.interceptors.request.use(
     const token = store.getState().user.token;
     if (token) {
       config.headers["Authorization"] = token
+      console.log("***Set JWT token***")
     }
     return config;
   },

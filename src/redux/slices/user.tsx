@@ -1,5 +1,5 @@
-import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit"
-import axios from "axios"
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
+import { signUpAPI, signInAPI } from "../../utils";
 
 export interface UserState {
     loading: boolean,
@@ -13,22 +13,30 @@ const initialState: UserState = {
     token: null,
 }
 
-export const signIn = createAsyncThunk(
-   'user/signIn',
-    async (parameters: { email: string, password: string,}, thunkAPI) => {
+export const signUp = createAsyncThunk(
+    'user/signUp',
+    async (parameters: { email: string, password: string, }, thunkAPI) => {
         try {
-            const { data } = await axios.post(
-                "http://localhost:8088/auth/signIn", {
-                    email: parameters.email,
-                    password: parameters.password
-                }
-            )                      
-            return data.resData.token
+            const { data } = await signUpAPI({ email: parameters.email, password: parameters.password })
+
+        } catch (error) {
+            console.log(error)
+            alert('Fail to signUp. Please try again')
+        }
+    })
+
+export const signIn = createAsyncThunk(
+    'user/signIn',
+    async (parameters: { email: string, password: string, }, thunkAPI) => {
+        try {
+            const { data } = await signInAPI({ email: parameters.email, password: parameters.password })
+            // console.log("***Token***", data.token)
+            return data.token
         } catch (error) {
             console.log(error)
             alert('Fail to sign in. Please try again')
         }
-})
+    })
 
 export const userSlice = createSlice({
     name: "user",
@@ -45,15 +53,25 @@ export const userSlice = createSlice({
             state.loading = true;
         },
         [signIn.fulfilled.type]: (state, action) => {
-            console.log(action)
-            state.token = action.payload;
+            state.token = action.payload
             state.loading = false;
             state.error = null;
         },
-        [signIn.rejected.type]: (state, action: PayloadAction<string | null>) => {
+        [signIn.rejected.type]: (state, action) => {
             state.loading = false;
             state.error = action.payload
-        }
+        },
+        [signUp.pending.type]: (state) => {
+            state.loading = true;
+        },
+        [signUp.fulfilled.type]: (state) => {
+            state.loading = false;
+            state.error = null;
+        },
+        [signUp.rejected.type]: (state, action) => {
+            state.loading = false;
+            state.error = action.payload
+        },
     }
 })
 

@@ -1,18 +1,18 @@
 import network from './network';
 
 // 登录
-export function loginUser(data) {
+export function signInAPI(data) {
   return network({
-    url: `/login`,
+    url: `/signIn`,
     method: "post",
     data
   });
 }
 
 // 注册
-export function registerUser(data) {
+export function signUpAPI(data) {
   return network({
-    url: `/register`,
+    url: `/signUp`,
     method: "post",
     data
   })

@@ -12,11 +12,7 @@ export const SignInForm: React.FC = () => {
     const dispatch = useAppDispatch();
     const navigate = useNavigate()
 
-    useEffect(()=>{
-        if (jwt !== null) {
-            navigate("/")
-        }
-    }, [jwt])
+    console.log(jwt)
 
     const onFinish = async(values: any) => {
         dispatch(signIn({
