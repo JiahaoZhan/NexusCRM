@@ -37,7 +37,6 @@ service.interceptors.response.use(
       store.dispatch(logOut());
       message.error("token失效, 或长时间未操作, 请重新登录");
     }
-
     return response.data;
   },
   (error) => {
@@ -50,7 +49,6 @@ service.interceptors.response.use(
     } else {
       message.error("网络异常，请稍后再试");
     }
-
     return Promise.reject(error);
   }
 );

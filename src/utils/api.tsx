@@ -1,4 +1,6 @@
 import network from './network';
+import { Task } from '../redux';
+
 
 // 登录
 export function signInAPI(data) {
@@ -19,7 +21,7 @@ export function signUpAPI(data) {
 }
 
 // 密码重置
-export function resetPwd(data) {
+export function resetPwdAPI(data) {
   return network({
     url: `/resetPwd`,
     method: "post",
@@ -28,7 +30,7 @@ export function resetPwd(data) {
 }
 
 // 任务列表
-export function queryTaskList(params) {
+export function queryTaskListAPI(params) {
   return network({
     url: `/queryTaskList`,
     method: "get",
@@ -46,7 +48,7 @@ export function addTaskAPI(data) {
 }
 
 // 编辑任务
-export function editTask(data) {
+export function editTaskAPI(data) {
   return network({
     url: `/editTask`,
     method: "put",
@@ -55,7 +57,7 @@ export function editTask(data) {
 }
 
 // 操作任务状态
-export function updateTaskStatus(data) {
+export function updateTaskStatusAPI(data) {
   return network({
     url: `/updateTaskStatus`,
     method: "put",
@@ -64,7 +66,7 @@ export function updateTaskStatus(data) {
 }
 
 // 点亮红星标记
-export function updateMark(data) {
+export function updateMarkAPI(data) {
   return network({
     url: `/updateMark`,
     method: "put",
@@ -73,7 +75,7 @@ export function updateMark(data) {
 }
 
 // 删除任务
-export function deleteTask(data) {
+export function deleteTaskAPI(data) {
   return network({
     url: `/deleteTask`,
     method: "delete",

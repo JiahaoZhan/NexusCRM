@@ -9,7 +9,8 @@ import logger from 'redux-logger'
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["user"],
+  whitelist: ["user", "task"],
+  autoMergeLevel2
 }
 
 const rootReducer = combineReducers({

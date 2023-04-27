@@ -1,34 +1,28 @@
 import React from "react"
 import { TaskForm } from "../Form"
 import { Form } from "antd"
-import { useState, useEffect } from "react"
 import { addTask } from "../../redux"
 import { useAppSelector, useAppDispatch } from "../../redux"
-import moment from "moment"
+import { v4 as uuidv4 } from 'uuid';
 
-export const AddTaskForm: React.FC = () => {
+
+interface Props {
+    visible: boolean
+    onAddFormClose: any
+}
+
+export const AddTaskForm: React.FC<Props> = ({ visible, onAddFormClose }) => {
 
     // Get jwt token for server side authentication
     const jwt = useAppSelector(state => state.user.token)
     const dispatch = useAppDispatch()
-
-    const [visible, toggleVisible] = useState(true);
-    const [currentRowData, setRowData] = useState({
-        id: -1,
-        title: '',
-        date: '',
-        content: ''
-    })
-
-
     const [form] = Form.useForm();
 
     const formProps = {
         title: "Add Task",
         textBtn: "Add",
         visible,
-        currentRowData,
-        form
+        form,
     }
 
     const onSubmit = () => {
@@ -37,30 +31,25 @@ export const AddTaskForm: React.FC = () => {
             .then(values => {
                 const task = {
                     title: values.title,
-                    gmt_expire: moment(values.date),
-                    content: values.content
+                    gmt_expire: values.date.toString(),
+                    content: values.content,
+                    important: false,
+                    status: "todo",
+                    id: uuidv4(),
                 }
                 // request to api to add task to database
                 dispatch(addTask({ jwt: jwt, task: task }))
                     .then(res => {
                         console.log("Adding task: ", res);
-                        toggleVisible(false)
-
                     })
             })
+        onAddFormClose()
     }
 
     const onClose = () => {
         form.resetFields();
-        toggleVisible(false)
-        setRowData({
-            id: -1,
-            title: '',
-            date: '',
-            content: ''
-        })
+        onAddFormClose();
     }
-
 
     return <TaskForm onSubmit={onSubmit} onClose={onClose} {...formProps} />
 }
