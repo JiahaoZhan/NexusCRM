@@ -46,7 +46,6 @@ export const Home: React.FC = () => {
   const [pageNum, setPageNum] = useState(1)
   const [pageSize, setPageSize] = useState(10)
   const [loading, setLoading] = useState(false)
-  // const [tasks]
 
   const [addFormVisible, setAddFormVisible] = useState(false)
   const [editFormVisible, setEditFormVisible] = useState(false)
@@ -218,10 +217,20 @@ export const Home: React.FC = () => {
     const important = task.important
     dispatch(updateTaskMark({jwt, id, index, important}))
   }
+  
+  const getPageData = (dataSrc: Task[] ) => {
+    return dataSrc.slice((pageNum-1)*pageSize, pageNum*pageSize)  
+  }
+
+  const onPageChange = (pageNum: number, pageSize: number) => {
+    setPageNum(pageNum)
+    setPageSize(pageSize)
+  }
 
   const {
     token: { colorBgContainer },
   } = theme.useToken();
+
 
   return (
     <Layout>
@@ -267,7 +276,7 @@ export const Home: React.FC = () => {
               <Table
                 bordered
                 rowKey={record => record.id}
-                dataSource={dataSrc}
+                dataSource={getPageData(dataSrc)}
                 columns={columns}
                 loading={loading}
                 pagination={false}
@@ -278,7 +287,7 @@ export const Home: React.FC = () => {
                 total={total}
                 style={{ display: loading && total === 0 ? 'none' : '' }}
                 showTotal={total => ` ${total} rows`}
-                onChange={() => { }}
+                onChange={onPageChange}
                 current={pageNum}
                 showSizeChanger={false}
                 defaultPageSize={pageSize}
