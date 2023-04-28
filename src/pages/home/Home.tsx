@@ -1,27 +1,23 @@
 import React from 'react';
 import { LaptopOutlined, NotificationOutlined, UserOutlined } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
-import { Breadcrumb, Layout, Menu, theme } from 'antd';
-import { Drawer, Button, Table, Space, Pagination, message, Select, Form, Input, DatePicker } from 'antd';
+import { Layout, Menu, theme } from 'antd';
+import { Button, Table, Space, Pagination, Select } from 'antd';
 import { StarOutlined, StarTwoTone, PlusOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import { useState, useEffect } from "react"
 import { formatDate } from '../../utils';
-import { Task, updateTaskMark } from '../../redux';
 import { AddTaskForm, EditTaskForm } from '../../components'
 import moment from "moment"
 import type { ColumnsType } from 'antd/es/table'
-import { useAppDispatch, useAppSelector, getAllTasks, deleteTask, updateStatus, filterFinished, filterImportant, filterTodo, filterAll} from '../../redux';;
+import { useAppDispatch, useAppSelector, getAllTasks, deleteTask, updateStatus, filterFinished, filterImportant, filterTodo, filterAll, Task, updateTaskMark} from '../../redux';;
 
 const { Header, Content, Sider } = Layout;
 
-const navItems: MenuProps['items'] = [{
-  key: 1,
-  label: "Home"
-},
+const navItems: MenuProps['items'] = [
 {
-  key: 2,
-  label: <Link to="">Add Task</Link>
+  key: 1,
+  label: <Link to="">Sign Out</Link>
 }
 ]
 
@@ -77,7 +73,6 @@ export const Home: React.FC = () => {
           return true
       }
     })
-    console.log(tasks)
     return tasks
   })
 
@@ -235,7 +230,7 @@ export const Home: React.FC = () => {
         <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['2']} items={navItems} />
       </Header>
       <Layout>
-        <Sider width={200} style={{ background: colorBgContainer }}>
+        {/* <Sider width={200} style={{ background: colorBgContainer }}>
           <Menu
             mode="inline"
             defaultSelectedKeys={['1']}
@@ -243,8 +238,8 @@ export const Home: React.FC = () => {
             style={{ height: '100%', borderRight: 0 }}
             items={items2}
           />
-        </Sider>
-        <Layout style={{ padding: '0 24px 24px' }}>
+        </Sider> */}
+        <Layout>
           <Content
             style={{
               padding: 24,
@@ -254,7 +249,7 @@ export const Home: React.FC = () => {
             }}
           >
             <div className="content clearfix">
-              <div className="list">
+              <div className="list" style={{marginBottom: 20}}>
                 <h2>Task List</h2>
                 <div className="list-right">
                   <Space size="middle">
@@ -276,6 +271,7 @@ export const Home: React.FC = () => {
                 columns={columns}
                 loading={loading}
                 pagination={false}
+                style={{marginBottom: 20}}
               />
               <Pagination
                 className="pagination"

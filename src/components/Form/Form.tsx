@@ -59,25 +59,25 @@ export const TaskForm: React.FC<IProps> = ({ title,
                 <Input></Input>
             </Form.Item>
             <Form.Item
-                label="任务名称"
+                label="Task Name"
                 name="title"
-                rules={[{ required: true, message: '请输入任务名称' }]}
+                rules={[{ required: true, message: 'Please input task name' }]}
             >
-                <Input placeholder="请输入任务名称" />
+                <Input placeholder="task name" />
             </Form.Item>
             <Form.Item
-                label="截止日期"
+                label="Deadline"
                 name="date"
-                rules={[{ required: true, message: '请选择截止日期' }]}
+                rules={[{ required: true, message: 'Please pick a deadline' }]}
             >
-                <DatePicker inputReadOnly={true} placeholder="请选择截止日期" style={{ width: '100%' }} />
+                <DatePicker inputReadOnly={true} placeholder="deadline" style={{ width: '100%' }} />
             </Form.Item>
             <Form.Item
-                label="任务内容"
+                label="Task content"
                 name="content"
-                rules={[{ required: true, message: '请输入任务内容' }]}
+                rules={[{ required: true, message: 'Please input task content' }]}
             >
-                <Input.TextArea rows={7} placeholder="请输入任务内容" className="textarea" />
+                <Input.TextArea rows={7} placeholder="task content" className="textarea" />
             </Form.Item>
         </Form>
     </Drawer>
