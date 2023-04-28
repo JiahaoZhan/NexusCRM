@@ -1,45 +1,17 @@
 import React from 'react';
-import { LaptopOutlined, NotificationOutlined, UserOutlined } from '@ant-design/icons';
-import type { MenuProps } from 'antd';
-import { Layout, Menu, theme } from 'antd';
-import { Button, Table, Space, Pagination, Select } from 'antd';
 import { StarOutlined, StarTwoTone, PlusOutlined } from '@ant-design/icons';
-import { Link } from 'react-router-dom';
+import type { MenuProps } from 'antd';
+import { Button, Table, Space, Pagination, Select, Layout, Menu, theme } from 'antd';
 import { useState, useEffect } from "react"
+import { useNavigate } from "react-router-dom";
 import { formatDate } from '../../utils';
 import { AddTaskForm, EditTaskForm } from '../../components'
 import moment from "moment"
 import type { ColumnsType } from 'antd/es/table'
-import { useAppDispatch, useAppSelector, getAllTasks, deleteTask, updateStatus, filterFinished, filterImportant, filterTodo, filterAll, Task, updateTaskMark} from '../../redux';;
+import { useAppDispatch, useAppSelector, getAllTasks, deleteTask, updateStatus, filterFinished, filterImportant, filterTodo, filterAll, Task, updateTaskMark, logOut} from '../../redux';;
 
-const { Header, Content, Sider } = Layout;
+const { Header, Content } = Layout;
 
-const navItems: MenuProps['items'] = [
-{
-  key: 1,
-  label: <Link to="">Sign Out</Link>
-}
-]
-
-const items2: MenuProps['items'] = [UserOutlined, LaptopOutlined, NotificationOutlined].map(
-  (icon, index) => {
-    const key = String(index + 1);
-
-    return {
-      key: `sub${key}`,
-      icon: React.createElement(icon),
-      label: `subnav ${key}`,
-
-      children: new Array(4).fill(null).map((_, j) => {
-        const subKey = index * 4 + j + 1;
-        return {
-          key: subKey,
-          label: `option${subKey}`,
-        };
-      }),
-    };
-  },
-);
 
 export const Home: React.FC = () => {
   const [total, setTotal] = useState(0)
@@ -56,6 +28,8 @@ export const Home: React.FC = () => {
     id: '',
     status: ''
   })
+
+  const navigate = useNavigate()
 
   const dispatch = useAppDispatch()
   const jwt = useAppSelector(state => state.user.token)
@@ -74,6 +48,16 @@ export const Home: React.FC = () => {
     })
     return tasks
   })
+
+  const navItems: MenuProps['items'] = [
+    {
+      key: "1",
+      label: "Sign Out",
+      onClick: () => {
+        dispatch(logOut())
+        navigate('/signIn')
+      }
+    }]
 
   const columns: ColumnsType<Task> = [
     {
@@ -138,7 +122,6 @@ export const Home: React.FC = () => {
       )
     }
   ]
-
 
   useEffect(() => {
     if (jwt) {
@@ -236,7 +219,7 @@ export const Home: React.FC = () => {
     <Layout>
       <Header className="header">
         <div className="logo" />
-        <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['2']} items={navItems} />
+        <Menu defaultOpenKeys={["1"]} theme="dark" mode="horizontal" items={navItems}/>
       </Header>
       <Layout>
         {/* <Sider width={200} style={{ background: colorBgContainer }}>
@@ -268,7 +251,7 @@ export const Home: React.FC = () => {
                       <Option value={"finished"}>Finished</Option>
                       <Option value={"important"}>Important</Option>
                     </Select>
-                    <Button type="primary" size="large" onClick={() => { setAddFormVisible(true) }}><PlusOutlined />Add Task</Button>
+                    <Button className="text-white bg-blue-500" type="primary" size="large" onClick={() => { setAddFormVisible(true) }}><PlusOutlined />Add Task</Button>
                   </Space>
                 </div>
               </div>

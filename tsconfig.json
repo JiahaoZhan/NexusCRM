@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "typeRoots" : ["node_modules/@types", "src/types"],
     "noImplicitAny": false,
     "target": "es5",
     "lib": [
@@ -24,4 +25,5 @@
   "include": [
     "src"
   ]
+  
 }

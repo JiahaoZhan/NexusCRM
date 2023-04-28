@@ -37,7 +37,6 @@ export const signIn = createAsyncThunk(
             alert('Fail to sign in. Please try again')
         }
     })
-
 export const userSlice = createSlice({
     name: "user",
     initialState,

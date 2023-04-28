@@ -40,7 +40,7 @@ export const TaskForm: React.FC<IProps> = ({ title,
         maskClosable={false}
         footer={
             <div style={{ display: 'flex', justifyContent: 'space-around' }}>
-                <Button onClick={onSubmit} type="primary">{textBtn}</Button>
+                <Button className={"text-white bg-blue-500"} onClick={onSubmit} type="primary">{textBtn}</Button>
                 <Button onClick={onReset}>Reset</Button>
                 <Button onClick={onClose} danger>Cancel</Button>
             </div>
