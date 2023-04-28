@@ -6,19 +6,19 @@ import { signIn } from "../../redux/slices/user";
 
 export const SignInForm: React.FC = () => {
     const loading = useAppSelector((state) => state.user.loading)
-    const jwt = useAppSelector((state) => state.user.token)
     const error = useAppSelector((state) => state.user.error)
 
     const dispatch = useAppDispatch();
     const navigate = useNavigate()
-
-    console.log(jwt)
 
     const onFinish = async (values: any) => {
         dispatch(signIn({
             email: values.username,
             password: values.password
         }))
+        .then(() => {
+            navigate('/')
+        })
     }
 
     const onFinishFailed = (errorInfo: any) => {

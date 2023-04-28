@@ -33,9 +33,9 @@ const initialState: TaskState = {
 
 export const updateTaskMark = createAsyncThunk(
     "task/updateTaskMark",
-    async (parameters: {jwt: string | null, id: string, index: number, important: boolean}, thunkAPI) => {
+    async (parameters: {id: string, index: number, important: boolean}, thunkAPI) => {
         try {
-            const res = await updateMarkAPI({jwt: parameters.jwt, id: parameters.id, index: parameters.index, important:parameters.important})
+            const res = await updateMarkAPI({id: parameters.id, index: parameters.index, important:parameters.important})
             return res
         } catch (error) {
             console.log(error)
@@ -46,9 +46,9 @@ export const updateTaskMark = createAsyncThunk(
 
 export const getAllTasks = createAsyncThunk(
     "task/getAllTasks",
-    async (parameters: { jwt: string, pageNo: number, pageSize: number }, thunkAPI) => {
+    async (parameters: {pageNo: number, pageSize: number }, thunkAPI) => {
         try {
-            const res = await queryTaskListAPI({ jwt: parameters.jwt, pageNo: parameters.pageNo, pageSize: parameters.pageSize })
+            const res = await queryTaskListAPI({pageNo: parameters.pageNo, pageSize: parameters.pageSize })
             return res
         } catch (error) {
             console.log(error)
@@ -59,9 +59,9 @@ export const getAllTasks = createAsyncThunk(
 
 export const deleteTask = createAsyncThunk(
     "task/deleteTask",
-    async (parameters: { jwt: string | null, id: string }, thunkAPI) => {
+    async (parameters: {id: string }, thunkAPI) => {
         try {
-            const res = deleteTaskAPI({ jwt: parameters.jwt, id: parameters.id })
+            const res = deleteTaskAPI({id: parameters.id })
             return res
         } catch (error) {
             console.log(error)
@@ -72,9 +72,9 @@ export const deleteTask = createAsyncThunk(
 
 export const editTask = createAsyncThunk(
     "task/editTask",
-    async (parameters: { jwt: string | null, task: Task }, thunkAPI) => {
+    async (parameters: {task: Task }, thunkAPI) => {
         try {
-            const res = editTaskAPI({ jwt: parameters.jwt, task: parameters.task })
+            const res = editTaskAPI({task: parameters.task })
             return res
         } catch (error) {
             console.log(error)
@@ -85,9 +85,9 @@ export const editTask = createAsyncThunk(
 
 export const addTask = createAsyncThunk(
     "task/addTask",
-    async (parameters: { jwt: string | null, task: Task }, thunkAPI) => {
+    async (parameters: {task: Task }, thunkAPI) => {
         try {
-            const res = await addTaskAPI({ jwt: parameters.jwt, task: parameters.task })
+            const res = await addTaskAPI({ task: parameters.task })
             return res
         } catch (error) {
             console.log(error)
@@ -98,9 +98,9 @@ export const addTask = createAsyncThunk(
 
 export const updateStatus = createAsyncThunk(
     "task/updateStatus",
-    async (parameters: {jwt: string | null, id: string, index: number, status: string}, thunkAPI) => {
+    async (parameters: {id: string, index: number, status: string}, thunkAPI) => {
         try {
-            const res = await updateTaskStatusAPI({jwt: parameters.jwt, id: parameters.id, index: parameters.index, status:parameters.status})
+            const res = await updateTaskStatusAPI({id: parameters.id, index: parameters.index, status:parameters.status})
             return res
         } catch (error) {
             console.log(error)

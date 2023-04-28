@@ -143,7 +143,7 @@ export const Home: React.FC = () => {
   useEffect(() => {
     if (jwt) {
       setLoading(true)
-      dispatch(getAllTasks({ jwt: jwt, pageNo: pageNum, pageSize }))
+      dispatch(getAllTasks({ pageNo: pageNum, pageSize }))
         .then((result: any) => {
           if (result.payload.data) {
             setTotal(result.payload.data.rows.length)
@@ -196,7 +196,7 @@ export const Home: React.FC = () => {
   }
 
   const removeTask = (id: string) => {
-    dispatch(deleteTask({jwt, id}))
+    dispatch(deleteTask({id}))
                     .then((res: any) => {
                         // code successful
                         if (res.payload.code === 0) {
@@ -209,13 +209,13 @@ export const Home: React.FC = () => {
   const completeTask = (task: Task, index: number) => {
     const id = task.id
     const status = task.status
-    dispatch(updateStatus({jwt, id, index, status}))
+    dispatch(updateStatus({id, index, status}))
   }
 
   const toggleFav = (task: Task, index: number) => {   
     const id = task.id
     const important = task.important
-    dispatch(updateTaskMark({jwt, id, index, important}))
+    dispatch(updateTaskMark({id, index, important}))
   }
   
   const getPageData = (dataSrc: Task[] ) => {

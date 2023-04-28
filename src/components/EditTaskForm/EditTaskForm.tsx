@@ -62,7 +62,7 @@ export const EditTaskForm: React.FC<Props> = ({ currentRowData, visible, onEditF
                 }
                 console.log("task to be edited", task)
                 // change the value in the database and change the local state
-                dispatch(editTask({ jwt: jwt, task: task }))
+                dispatch(editTask({task: task }))
                     .then((res: any) => {
                         // code successful
                         if (res.payload.code === 0) {

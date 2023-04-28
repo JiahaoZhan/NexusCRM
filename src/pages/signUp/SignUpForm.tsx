@@ -15,6 +15,9 @@ export const SignUpForm = () => {
             email: values.username,
             password: values.password
         }))
+        .then(()=> {
+            navigate('/signIn')
+        })
     }
 
     const onFinishFailed = (errorInfo: any) => {

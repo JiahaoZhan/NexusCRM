@@ -38,7 +38,7 @@ export const AddTaskForm: React.FC<Props> = ({ visible, onAddFormClose }) => {
                     id: uuidv4(),
                 }
                 // request to api to add task to database
-                dispatch(addTask({ jwt: jwt, task: task }))
+                dispatch(addTask({ task: task }))
                     .then(res => {
                         console.log("Adding task: ", res);
                     })
