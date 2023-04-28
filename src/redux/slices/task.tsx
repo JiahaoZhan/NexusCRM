@@ -19,14 +19,16 @@ export interface Task {
 
 export interface TaskState {
     loading: boolean,
-    tasks: Task[]
+    tasks: Task[],
+    filter: string,
     error: string | null
 }
 
 const initialState: TaskState = {
     loading: false,
     tasks: [],
-    error: null
+    error: null,
+    filter: "all"
 }
 
 export const updateTaskMark = createAsyncThunk(
@@ -106,10 +108,24 @@ export const updateStatus = createAsyncThunk(
         }
     }
 )
+
 export const taskSlice = createSlice({
     name: "task",
     initialState,
-    reducers: {},
+    reducers: {
+        filterTodo: (state) => {
+            state.filter = "todo"
+        },
+        filterImportant: (state) => {
+            state.filter = "important"
+        },
+        filterFinished: (state) => {
+            state.filter = "finished"
+        },
+        filterAll: (state) => {
+            state.filter = "all"
+        }
+    },
     extraReducers: {
         [addTask.pending.type]: (state) => {
             state.loading = true;
@@ -205,3 +221,5 @@ export const taskSlice = createSlice({
         }
     }
 })
+
+export const { filterTodo, filterFinished, filterImportant, filterAll} = taskSlice.actions

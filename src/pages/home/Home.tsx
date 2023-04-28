@@ -11,7 +11,7 @@ import { Task, updateTaskMark } from '../../redux';
 import { AddTaskForm, EditTaskForm } from '../../components'
 import moment from "moment"
 import type { ColumnsType } from 'antd/es/table'
-import { useAppDispatch, useAppSelector, getAllTasks, deleteTask, updateStatus} from '../../redux';;
+import { useAppDispatch, useAppSelector, getAllTasks, deleteTask, updateStatus, filterFinished, filterImportant, filterTodo, filterAll} from '../../redux';;
 
 const { Header, Content, Sider } = Layout;
 
@@ -50,6 +50,7 @@ export const Home: React.FC = () => {
   const [pageNum, setPageNum] = useState(1)
   const [pageSize, setPageSize] = useState(10)
   const [loading, setLoading] = useState(false)
+  // const [tasks]
 
   const [addFormVisible, setAddFormVisible] = useState(false)
   const [editFormVisible, setEditFormVisible] = useState(false)
@@ -63,7 +64,22 @@ export const Home: React.FC = () => {
 
   const dispatch = useAppDispatch()
   const jwt = useAppSelector(state => state.user.token)
-  const dataSrc = useAppSelector(state => state.task.tasks)
+  const dataSrc = useAppSelector(state => {
+    const tasks = state.task.tasks.filter((task)=>{
+      switch (state.task.filter) {
+        case "important":
+          return task.important
+        case "todo":
+          return task.status === "To do"
+        case "finished":
+          return task.status === "Finished"
+        default:
+          return true
+      }
+    })
+    console.log(tasks)
+    return tasks
+  })
 
   const columns: ColumnsType<Task> = [
     {
@@ -156,8 +172,21 @@ export const Home: React.FC = () => {
     setEditFormVisible(false)
   }
 
-  const statusChange = (value: string) => {
-    
+  const filterChange = (value: string) => {
+    switch (value) {
+      case "todo":
+        dispatch(filterTodo())
+        break;
+      case "finished":
+        dispatch(filterFinished())
+        break;
+      case "important":
+        dispatch(filterImportant())
+        break;
+      default:
+        dispatch(filterAll()) 
+      break;
+    }
   }
 
   // handler of edit buttons of all rows
@@ -229,11 +258,11 @@ export const Home: React.FC = () => {
                 <h2>Task List</h2>
                 <div className="list-right">
                   <Space size="middle">
-                    <Select size="large" onChange={statusChange} style={{ width: 160 }} allowClear placeholder="Task status">
-                      <Option value>All</Option>
+                    <Select defaultValue="all" size="large" onChange={filterChange} style={{ width: 160 }} allowClear placeholder="Task status">
+                      <Option value={"all"}>All</Option>
                       <Option value={"todo"}>To do</Option>
-                      <Option value={"done"}>Done</Option>
-                      <Option value={"deleted"}>Delete</Option>
+                      <Option value={"finished"}>Finished</Option>
+                      <Option value={"important"}>Important</Option>
                     </Select>
                     <Button type="primary" size="large" onClick={() => { setAddFormVisible(true) }}><PlusOutlined />Add Task</Button>
                   </Space>
