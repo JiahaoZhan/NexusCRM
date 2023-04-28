@@ -115,8 +115,9 @@ export const taskSlice = createSlice({
             state.loading = true;
         },
         [addTask.fulfilled.type]: (state, action) => {
-            console.log("ADDtASK ***:", action.payload.data)
-            state.tasks.push(action.payload.data)
+            if (action.payload.data) {
+                state.tasks.push(action.payload.data)
+            }
             state.loading = false;
             state.error = null;
         },

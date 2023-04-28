@@ -35,7 +35,7 @@ export const EditTaskForm: React.FC<Props> = ({ currentRowData, visible, onEditF
             title: currentRowData.title,
             date: moment(currentRowData.date),
             content: currentRowData.content,
-            id: currentRowData.id
+            id: currentRowData.id,
         })
     }, [currentRowData])
 
@@ -57,7 +57,7 @@ export const EditTaskForm: React.FC<Props> = ({ currentRowData, visible, onEditF
                     gmt_expire: values.date.toString(),
                     content: values.content,
                     important: false,
-                    status: "todo",
+                    status: currentRowData.status,
                     id: values.id
                 }
                 console.log("task to be edited", task)

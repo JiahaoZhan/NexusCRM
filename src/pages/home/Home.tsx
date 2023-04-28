@@ -50,14 +50,15 @@ export const Home: React.FC = () => {
   const [pageNum, setPageNum] = useState(1)
   const [pageSize, setPageSize] = useState(10)
   const [loading, setLoading] = useState(false)
-  const [status, setStatus] = useState(null)
+
   const [addFormVisible, setAddFormVisible] = useState(false)
   const [editFormVisible, setEditFormVisible] = useState(false)
   const [currentRowData, setCurrentRowData] = useState({
     title: '',
     date: '',
     content: '',
-    id: ''
+    id: '',
+    status: ''
   })
 
   const dispatch = useAppDispatch()
@@ -133,11 +134,16 @@ export const Home: React.FC = () => {
     if (jwt) {
       setLoading(true)
       dispatch(getAllTasks({ jwt: jwt, pageNo: pageNum, pageSize }))
-        .then(() => {
+        .then((result: any) => {
+          if (result.payload.data) {
+            setTotal(result.payload.data.rows.length)
+          }
+          else {
+            setTotal(0)
+          }
           setLoading(false)
         })
     }
-
   }, [])
 
   const { Option } = Select;
@@ -151,9 +157,7 @@ export const Home: React.FC = () => {
   }
 
   const statusChange = (value: string) => {
-    console.log('Task status===', typeof value === 'string')
-    setStatus(typeof value === 'string' ? null : value);
-    setPageNum(1)
+    
   }
 
   // handler of edit buttons of all rows
@@ -162,7 +166,8 @@ export const Home: React.FC = () => {
       title: task.title,
       date: moment(task.gmt_expire).toString(),
       content: task.content,
-      id: task.id
+      id: task.id,
+      status: task.status
     })
     setEditFormVisible(true)
   }
@@ -175,6 +180,7 @@ export const Home: React.FC = () => {
                             onEditFormClose();
                         }
                     })
+                    setTotal(total => total - 1)
   }
 
   const completeTask = (task: Task, index: number) => {
