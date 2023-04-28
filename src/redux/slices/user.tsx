@@ -30,7 +30,7 @@ export const signIn = createAsyncThunk(
     async (parameters: { email: string, password: string, }, thunkAPI) => {
         try {
             const { data } = await signInAPI({ email: parameters.email, password: parameters.password })
-            // console.log("***Token***", data.token)
+            console.log("***Token***", data.token)
             return data.token
         } catch (error) {
             console.log(error)

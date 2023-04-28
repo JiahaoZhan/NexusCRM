@@ -1,6 +1,4 @@
 import network from './network';
-import { Task } from '../redux';
-
 
 // 登录
 export function signInAPI(data) {

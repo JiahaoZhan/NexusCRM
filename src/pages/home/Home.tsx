@@ -6,12 +6,12 @@ import { Drawer, Button, Table, Space, Pagination, message, Select, Form, Input,
 import { StarOutlined, StarTwoTone, PlusOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import { useState, useEffect } from "react"
-import { queryTaskListAPI, formatDate } from '../../utils';
-import { Task } from '../../redux';
+import { formatDate } from '../../utils';
+import { Task, updateTaskMark } from '../../redux';
 import { AddTaskForm, EditTaskForm } from '../../components'
 import moment from "moment"
 import type { ColumnsType } from 'antd/es/table'
-import { useAppDispatch, useAppSelector, getAllTasks } from '../../redux';;
+import { useAppDispatch, useAppSelector, getAllTasks, deleteTask, updateStatus} from '../../redux';;
 
 const { Header, Content, Sider } = Layout;
 
@@ -79,14 +79,13 @@ export const Home: React.FC = () => {
       dataIndex: 'title',
       key: 'title',
       render: (text: any, record: any, index: number) => {
-        // const fav = dataSrc[index].is_major;
-        const fav = 0
+        const fav = dataSrc[index].important
         const style = {
           cursor: 'pointer',
           fontSize: '16px'
         }
 
-        const icon = fav === 0 ? <StarOutlined style={style} /> : <StarTwoTone style={style} twoToneColor="#f50" />;
+        const icon = fav === false ? <StarOutlined style={style} /> : <StarTwoTone style={style} twoToneColor="#f50" />;
 
         return <div><span onClick={() => toggleFav(record, index)}>{icon}</span> {record.title}</div>;
       }
@@ -108,7 +107,7 @@ export const Home: React.FC = () => {
       key: 'status',
       width: 120,
       render: (text: any, record: any) => {
-        const txt = record.status === 0 ? 'To do' : record.status === 1 ? 'Finished' : 'Deleted';
+        const txt = record.status
         return txt;
       }
     },
@@ -120,8 +119,8 @@ export const Home: React.FC = () => {
       render: (text: any, record: any, index: number) => (
         <Space size="middle">
           <Button style={{ marginRight: '10px', display: record.status !== 2 ? '' : 'none' }} onClick={() => editTask(record, index)}>Edit</Button>
-          <Button type="primary" ghost style={{ marginRight: '10px', display: record.status !== 2 ? '' : 'none' }} onClick={() => completeTask(record)}>
-            {record.status === 0 ? 'Finished' : record.status === 1 ? 'To do' : null}
+          <Button type="primary" ghost style={{ marginRight: '10px', display: record.status !== 2 ? '' : 'none' }} onClick={() => completeTask(record, index)}>
+            {record.status === "To do" ? 'Finish' : record.status === "Finished" ? 'To do' : null}
           </Button>
           <Button danger style={{ display: record.status !== 2 ? '' : 'none' }} onClick={() => removeTask(record.id)}>Delete</Button>
         </Space>
@@ -168,16 +167,26 @@ export const Home: React.FC = () => {
     setEditFormVisible(true)
   }
 
-  const removeTask = (id: number) => {
-
+  const removeTask = (id: string) => {
+    dispatch(deleteTask({jwt, id}))
+                    .then((res: any) => {
+                        // code successful
+                        if (res.payload.code === 0) {
+                            onEditFormClose();
+                        }
+                    })
   }
 
-  const completeTask = (task: Task) => {
-
+  const completeTask = (task: Task, index: number) => {
+    const id = task.id
+    const status = task.status
+    dispatch(updateStatus({jwt, id, index, status}))
   }
 
-  const toggleFav = (task: Task, index: number) => {
-
+  const toggleFav = (task: Task, index: number) => {   
+    const id = task.id
+    const important = task.important
+    dispatch(updateTaskMark({jwt, id, index, important}))
   }
 
   const {
