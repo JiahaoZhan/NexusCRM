@@ -1,11 +1,11 @@
 import { Form, Input, Button, Checkbox } from "antd";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useAppSelector, useAppDispatch } from "../../redux/hooks"
 import { signIn } from "../../redux/slices/user";
 import { useState } from "react"
 import facebook from "../../assets/images/facebook.png"
 import google  from "../../assets/images/google.png"
-import  signInImg  from "../../assets/images/signInImg.jpg"
+
 
 export const SignInForm: React.FC = () => {
     const loading = useAppSelector((state) => state.user.loading)
@@ -15,7 +15,7 @@ export const SignInForm: React.FC = () => {
     const [nextBtnVisible, setNextBtnVisible] = useState("block")
     const [submitBtnVisible, setSubmitBtnVisible] = useState('hidden')
     const [backBtnVisible, setBackBtnVisible] = useState('hidden')
-
+  
     const onClickNext = () => {
         setEmailInputVisible("hidden")
         setNextBtnVisible('hidden')
@@ -52,9 +52,9 @@ export const SignInForm: React.FC = () => {
     return (
         <div className="p-6 md:p-20">
         {/* <!-- Top Content --> */}
-        <h2 className="font-mono mb-5 text-4xl font-bold">Log In</h2>
+        <h2 className="font-mono mb-5 text-4xl font-bold">Sign In</h2>
         <p className="max-w-sm mb-5 font-sans font-light text-gray-600">
-        Streamline your business and strengthen client relationships
+        Nexus -CRM the ultimate solution for managing your clients with ease and efficiency.
         </p>
         <Form
             name="basic"
@@ -83,7 +83,10 @@ export const SignInForm: React.FC = () => {
                 <Checkbox className="font-sans font-light text-gray-600">Remember me</Checkbox>
             </Form.Item>
 
-            <span className="font-thin text-cyan-700">Forgot password</span>
+            <div className="flex items-center justify-between">
+                <span className=" text-cyan-700">Forgot password</span>
+                <span className=" text-cyan-700">New member? <Link to="/SignUp">Sign up</Link></span>
+            </div>
 
         {/* <input
           type="text"
@@ -95,12 +98,12 @@ export const SignInForm: React.FC = () => {
         <div
           className="flex flex-col items-center justify-between space-y-6 md:flex-row md:space-y-0 mt-6"
         >
-
-          <button
+        <Form.Item className={`${nextBtnVisible} inline-block mr-3`}>
+          <Button
             onClick={onClickNext}
-            className={`${nextBtnVisible} w-full md:w-auto flex justify-center items-center p-3 space-x-4 font-sans font-bold text-white rounded-md shadow-lg px-9 bg-cyan-700 shadow-cyan-100 hover:bg-opacity-90 shadow-sm hover:shadow-lg border transition hover:-translate-y-0.5 duration-150`}
+            className={`w-full md:w-auto flex justify-center items-center p-6 space-x-4 font-sans font-bold text-white rounded-md shadow-lg px-9 bg-cyan-700 shadow-cyan-100 hover:bg-opacity-90 shadow-sm hover:shadow-lg border transition hover:-translate-y-0.5 duration-150`}
           >
-            <span>Next</span>
+            <span className="hover:text-white">Next</span>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="w-7"
@@ -116,8 +119,8 @@ export const SignInForm: React.FC = () => {
               <line x1="13" y1="18" x2="19" y2="12" />
               <line x1="13" y1="6" x2="19" y2="12" />
             </svg>
-          </button>
-
+          </Button>
+        </Form.Item>
         <div>
         <Form.Item className={`${backBtnVisible} inline-block mr-3`}>
           <Button 
@@ -143,8 +146,8 @@ export const SignInForm: React.FC = () => {
             </svg>
           </Button>
           </Form.Item>
-          <Form.Item className={`${submitBtnVisible} inline-block ml-3`}>
-                <Button block={true} className="w-full md:w-auto flex justify-center items-center p-6 space-x-4 font-sans font-bold text-white rounded-md shadow-lg px-9 bg-cyan-700 shadow-cyan-100 hover:bg-opacity-90 shadow-sm hover:shadow-lg border transition hover:-translate-y-0.5 duration-150"htmlType="submit" /*loading={loading}*/>
+          <Form.Item className={`${submitBtnVisible} inline-block ml-3 `}>
+                <Button type="primary" block={true} className="hover:bg-cyan-700 w-full md:w-auto flex justify-center items-center p-6 space-x-4 font-sans font-bold text-white rounded-md shadow-lg px-9 bg-cyan-700 shadow-cyan-100 hover:bg-opacity-90 shadow-sm hover:shadow-lg border transition hover:-translate-y-0.5 duration-150" htmlType="submit" /*loading={loading}*/>
                 <span className="hover: text-white">Sign In</span>
                 <svg
                 xmlns="http://www.w3.org/2000/svg"

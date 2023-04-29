@@ -4,7 +4,7 @@ import signInImg  from "../../assets/images/signInImg.jpg"
 
 export const SignInPage: React.FC = (props) => {
     return (
-        <div className="flex items-center justify-center min-h-screen bg-rose-50">
+        <div className="flex items-center justify-center min-h-screen bg-blue-50">
         {/* <!-- Card Container --> */}
         <div
           className="relative flex flex-col m-6 space-y-10 bg-white shadow-2xl rounded-2xl md:flex-row md:space-y-0 md:m-0"

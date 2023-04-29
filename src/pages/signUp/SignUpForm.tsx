@@ -1,5 +1,5 @@
-import { Form, Input, Button, Checkbox } from "antd";
-import { useNavigate } from "react-router-dom";
+import { Form, Input, Button } from "antd";
+import { useNavigate, Link } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../redux";
 import { signUp } from "../../redux";
 
@@ -24,28 +24,25 @@ export const SignUpForm = () => {
         console.log('Failed:', errorInfo)
     }
     return (
-        <Form
+        <Form className="w-full"
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
         >
             <Form.Item
-                label="Username"
                 name="username"
                 rules={[{ required: true, message: "Please enter your username" }]}
             >
-                <Input />
+                <Input placeholder="email" className='w-full p-3 border border-gray-300 rounded-md placeholder:font-sans placeholder:font-light'/>
             </Form.Item>
 
             <Form.Item
-                label="Password"
                 name="password"
                 rules={[{ required: true, message: "Please enter your password" }]}
             >
-                <Input.Password />
+                <Input.Password placeholder="password" className='w-full p-3 border border-gray-300 rounded-md placeholder:font-sans placeholder:font-light'/>
             </Form.Item>
 
             <Form.Item
-                label="Confirm Password"
                 name="confirm"
                 hasFeedback
                 rules={[
@@ -62,18 +59,19 @@ export const SignUpForm = () => {
                     })
                 ]}
             >
-                <Input.Password />
+                <Input.Password placeholder="confirm password" className='w-full p-3 border border-gray-300 rounded-md placeholder:font-sans placeholder:font-light'/>
             </Form.Item>
 
-            <Form.Item name="remember" valuePropName="checked">
-                <Checkbox>Remember me</Checkbox>
-            </Form.Item>
-
+            
             <Form.Item>
-                <Button type="primary" htmlType="submit">
-                    Submit
+                <Button type="primary" htmlType="submit" className="hover:bg-cyan-700 w-full md:w-auto flex justify-center items-center p-6 space-x-4 font-sans font-bold text-white rounded-md shadow-lg px-9 bg-cyan-700 shadow-cyan-100 hover:bg-opacity-90 shadow-sm hover:shadow-lg border transition hover:-translate-y-0.5 duration-150" >
+                    Sign up
                 </Button>
             </Form.Item>
+
+            <div className="flex items-center justify-between">
+                <span className=" text-cyan-700">Already a member? <Link to="/SignIn">Sign in</Link></span>
+            </div>
         </Form>
     )
 }
