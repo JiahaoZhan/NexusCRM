@@ -1,31 +1,25 @@
-import { createBrowserRouter, Route, createRoutesFromElements, Routes } from "react-router-dom";
+import { createBrowserRouter, Navigate, Route, createRoutesFromElements, Outlet} from "react-router-dom";
 import { redirect } from "react-router-dom";
 import React from "react"
 import { SignUpPage, SignInPage, Home } from "../pages"
+import { useAppSelector } from "../redux";
 
 
-const PrivateRoute = ({ component, isAuthenticated, ...rest }) => {
-    if (!isAuthenticated) {
-        return redirect("/signIn")
-    }
-    else {
-        return <Route element={component} {...rest} />
-    }
+const PrivateRoutes = () => {
+    const jwt = useAppSelector(state=>state.user.token)
+    return (jwt? <Outlet/> : <Navigate to="/signIn"/>)
 }
 
 const router = createBrowserRouter(
     createRoutesFromElements(
         <Route>
-            <Route path="/" element={<Home />} />
+            <Route element={<PrivateRoutes/>}>
+                <Route path="/" element={<Home />} />
+            </Route>
             <Route path="/signUp" element={<SignUpPage />} />
             <Route path="/signIn" element={<SignInPage />} />
         </Route>
     )
 )
-
-const authRouter = (props: any) => {
-    const { location, config } = props;
-
-}
 
 export default router
